@@ -4,10 +4,10 @@ import websockets
 import asyncio
 import json
 from misskey import Misskey
-
+import threading
 showTL = True
 conf_dir = "conf.json"
-def disp():
+async def disp():
     #描画系
     pass
 
@@ -24,7 +24,8 @@ async def getTL(token):
         }))
         while True:
             data = json.loads(await ws.recv())
-            print(data)
+            output = data["body"]["body"]["user"]["name"]+":"+data["body"]["body"]["text"]
+            print(output)
 
 def cv2stw(disp_array):
     #OpenCVで描画したのをストわにhttpで投げる
@@ -45,5 +46,5 @@ msk = Misskey('stormskey.works', i=TOKEN)
 MY_ID = msk.i()['id']
 WS_URL='wss://stormskey.works/streaming?i='+TOKEN
 if __name__ == "__main__":
-    asyncio.run(getTL(conf["token"]))
-    #asyncio.run(run())
+    #asyncio.run(getTL(conf["token"]))
+    asyncio.run(run())
