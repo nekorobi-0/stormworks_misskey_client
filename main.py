@@ -24,7 +24,7 @@ class S(BaseHTTPRequestHandler):
 		self.end_headers()
 
 	def do_GET(self):
-
+        
 		self._set_headers()
 		self.wfile.write(str(now_img).encode())
 
@@ -76,7 +76,11 @@ async def disp():
             tl_text += f"   {i[0]}\n{i[1]}\n"
         img = putText_jp(img, tl_text, (75,5), 6, (0, 0, 0))
         img = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)#モノクロ
-        now_img = img.tolist()
+        now_img_raw = img.tolist()
+        now_img = []
+        for i in now_img_raw:
+            now_img += i
+        now_img = str(now_img)[1:-1]
         show_img = cv2.resize(img, (1152,640))
         cv2.imshow('image', show_img)
         cv2.waitKey(1)
