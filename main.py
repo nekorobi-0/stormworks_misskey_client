@@ -6,10 +6,33 @@ import json
 from misskey import Misskey
 import numpy as np
 from PIL import ImageFont, ImageDraw, Image
+import threading
+
 showTL = True
 conf_dir = "conf.json"
 test = False
 output = []
+
+class S(BaseHTTPRequestHandler):
+
+	def _set_headers(self):
+
+		self.send_response(200)
+		self.send_header('Content-type', 'text/html')
+		self.end_headers()
+
+	def do_GET(self):
+
+		self._set_headers()
+		self.wfile.write("<html><body><h1>GET message receive!</h1></body></html>")
+
+	def do_POST(self):
+
+		self._set_headers()
+		self.wfile.write("<html><body><h1>POST message receive!</h1></body></html>")
+
+
+
 def putText_jp(img, text, point, size, color):
     #https://monomonotech.jp/kurage/raspberrypi/opencv_japanese.html
     #Notoフォントとする
