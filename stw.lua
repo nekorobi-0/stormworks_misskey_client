@@ -1,13 +1,19 @@
-disp_arr = []
+disp_arr = {}
 ticks = 0
 function onTick()
     async.httpGet(8888, "/")
 end
 
 function onDraw()
+    if disp_arr == {} then
+        return
+    end
+    c = 0
     for y = 1, 160 do
         for x = 1,288 do
-            screen.setColor(disp_arr,disp_arr,disp_arr)
+            c = c+1
+            a = disp_arr[c]
+            screen.setColor(a,a,a)
             screen.drawRect(x, y,1,1)
         end
     end
