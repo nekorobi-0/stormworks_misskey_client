@@ -7,6 +7,7 @@ import numpy as np
 from PIL import ImageFont, ImageDraw, Image
 import threading
 from http.server import BaseHTTPRequestHandler, HTTPServer
+import re
 
 showTL = True
 conf_dir = "conf.json"
@@ -66,6 +67,7 @@ async def disp():
     while True:
         img = cv2.imread('background.png')
         cv2.line(img,(70,0),(70,160),(0,0,0))
+        cv2.line(img,(0,0),(0,160),(0,0,0))
         #メニュー
         img = putText_jp(img, "Misskey Client \n   for Stormworks", (5, 5), 6, (0, 0, 0))
         img = putText_jp(img, "Home", (5, 25), 6, (0, 0, 0))
@@ -81,7 +83,17 @@ async def disp():
         now_img = []
         for i in now_img_raw:
             now_img += i
-        now_img = str(now_img)[1:-1]
+        f = 255
+        c = 0
+        now_img2 = []
+        for i in now_img:
+            c += 1
+            if f != i:
+                now_img2.append(c)
+                c = 0
+            f = i
+        now_img2.pop(0)
+        now_img = re.sub(r'[^(0-9|,)]',"", str(now_img2))
         show_img = cv2.resize(img, (1152,640))
         cv2.imshow('image', show_img)
         cv2.waitKey(1)
