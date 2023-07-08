@@ -3,8 +3,9 @@ ticks = 0
 wait = 3
 rb = "abc"
 function onTick()
+	now = input.getNumber(3) + "," + input.getNumber(4)
     if 0 < wait then
-        async.httpGet(8888, "/abc")
+        async.httpGet(8888, "/"+now)
         wait = wait -1
     end
 end
