@@ -18,21 +18,21 @@ now_img = []
 
 class S(BaseHTTPRequestHandler):
 
-	def _set_headers(self):
+    def _set_headers(self):
 
-		self.send_response(200)
-		self.send_header('Content-type', 'text/html')
-		self.end_headers()
+        self.send_response(200)
+        self.send_header('Content-type', 'text/html')
+        self.end_headers()
 
-	def do_GET(self):
+    def do_GET(self):
+        print(str(self.requestline[4:-8]))
+        self._set_headers()
+        self.wfile.write(str(now_img).encode())
+    
+    def do_POST(self):
         
-		self._set_headers()
-		self.wfile.write(str(now_img).encode())
-
-	def do_POST(self):
-
-		self._set_headers()
-		self.wfile.write("<html><body><h1>POST message receive!</h1></body></html>".encode())
+        self._set_headers()
+        self.wfile.write("<html><body><h1>POST message receive!</h1></body></html>".encode())
 
 def run_http_server(server_class=HTTPServer, handler_class=S, port=8888):
 
@@ -78,24 +78,9 @@ def disp():
         for i in output:
             tl_text += f"   {i[0]}\n{i[1]}\n"
         img = putText_jp(img, tl_text, (75,5), 6, (0, 0, 0))
-        img = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)#モノクロ
-        now_img_raw = img.tolist()
-        now_img = []
-        for i in now_img_raw:
-            now_img += i
-        f = 255
-        c = 0
-        now_img2 = []
-        for i in now_img:
-            c += 1
-            if f != i:
-                now_img2.append(c)
-                c = 0
-            f = i
-        now_img2.pop(0)
-        now_img = re.sub(r'[^(0-9|,)]',"", str(now_img2))
-        show_img = cv2.resize(img, (1152,640))
+        show_img = cv2.resize(img, (964, 480))
         cv2.imshow('image', show_img)
+        now_img = cv2stw(img,288,160)
         cv2.waitKey(1)
 
 async def getTL(token):
@@ -122,10 +107,27 @@ async def getTL(token):
                 if len(output) > 20:
                     output = output[:-1]
         await asyncio.sleep(1)
-def cv2stw(disp_array):
+def cv2stw(disp_array,x,y):
+    img = cv2.resize(disp_array,(x,y))
     #OpenCVで描画したのをストわにhttpで投げるための処理
-    str
-    return
+    img = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)#モノクロ
+    ret, img = cv2.threshold(img, 127, 255, cv2.THRESH_BINARY)
+    now_img_raw = img.tolist()
+    now_img = []
+    for i in now_img_raw:
+        now_img += i
+    f = 255
+    c = 0
+    now_img2 = []
+    for i in now_img:
+        c += 1
+        if f != i:
+            now_img2.append(c)
+            c = 0
+        f = i
+    now_img2.pop(0)
+    now_img = re.sub(r'[^(0-9|,)]',"", str(now_img2))
+    return now_img
 
 def getconf(file_dir):
     with open(file_dir,"r") as json_open:
