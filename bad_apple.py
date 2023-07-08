@@ -17,7 +17,7 @@ def disp():
         img = cv2.line(img,(213,0),(213,160),(255,255,255))
         now_img = main.cv2stw(img,213,160)
         cv2.imshow('Video', img)
-        cv2.waitKey(33)
+        cv2.waitKey(26)
 class S(BaseHTTPRequestHandler):
 
     def _set_headers(self):

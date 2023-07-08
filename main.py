@@ -25,6 +25,7 @@ class S(BaseHTTPRequestHandler):
         self.end_headers()
 
     def do_GET(self):
+        print(self.requestline[5:-8])
         print(str(self.requestline[4:-8]))
         self._set_headers()
         self.wfile.write(str(now_img).encode())
