@@ -1,4 +1,3 @@
-import requests
 import cv2
 import websockets
 import asyncio
@@ -11,6 +10,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 
 showTL = True
 conf_dir = "conf.json"
+domain = "misskey.io"
 test = False
 output = []
 now_img = []
@@ -70,6 +70,7 @@ async def disp():
         img = putText_jp(img, "Misskey Client \n   for Stormworks", (5, 5), 6, (0, 0, 0))
         img = putText_jp(img, "Home", (5, 25), 6, (0, 0, 0))
         img = putText_jp(img, "NOTE", (5, 35), 6, (0, 0, 0))
+        img = putText_jp(img, f"Connecting to\n{domain}", (5, 140), 6, (0, 0, 0))
         #TL
         tl_text = ""
         for i in output:
@@ -91,7 +92,7 @@ async def getTL(token):
     #TL取得
     while True:
         print("try to connect")
-        uri = f"wss://stormskey.works/streaming?i={token}"
+        uri = f"wss://{domain}/streaming?i={token}"
         async with websockets.connect(uri) as ws:
             await ws.send(json.dumps({
 	            "type": 'connect',
@@ -107,7 +108,6 @@ async def getTL(token):
                 except websockets.exceptions.ConnectionClosedError:
                     break
                 output.insert(0,[str(data["body"]["body"]["user"]["name"]),str(data["body"]["body"]["text"])])
-                print(output)
                 if len(output) > 20:
                     output = output[:-1]
         await asyncio.sleep(1)
@@ -128,11 +128,11 @@ async def run():
     await asyncio.gather(disp(),getTL(TOKEN))
 
 conf = getconf(conf_dir)
-TOKEN= conf["token"]
+TOKEN= conf[domain]["token"]
 print(TOKEN)
-msk = Misskey('stormskey.works', i=TOKEN)
+msk = Misskey(domain, i=TOKEN)
 MY_ID = msk.i()['id']
-WS_URL='wss://stormskey.works/streaming?i='+TOKEN
+WS_URL=f'wss://{domain}/streaming?i={TOKEN}'
 if __name__ == "__main__" and (not test):
     #asyncio.run(getTL(conf["token"]))
     print("not Test mode")

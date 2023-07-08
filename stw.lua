@@ -1,7 +1,11 @@
 disp_arr = {}
 ticks = 0
+wait = false
 function onTick()
-    async.httpGet(8888, "/")
+    if !wait then
+        async.httpGet(8888, "/")
+        wait = true
+    end
 end
 
 function onDraw()
@@ -20,6 +24,7 @@ function onDraw()
 end
 function httpReply(port, request_body, response_body)
     disp_arr = split("s",response_body)
+    wait = false
 end
 
 -- 自作split関数
