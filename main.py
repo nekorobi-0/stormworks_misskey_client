@@ -61,7 +61,7 @@ def putText_jp(img, text, point, size, color):
     #PILからndarrayに変換して返す
     return np.array(img_pil)
 
-async def disp():
+def disp():
     #描画系
     global now_img
     while True:
@@ -97,7 +97,6 @@ async def disp():
         show_img = cv2.resize(img, (1152,640))
         cv2.imshow('image', show_img)
         cv2.waitKey(1)
-        await asyncio.sleep(0.01)
 
 async def getTL(token):
     global output
@@ -133,11 +132,6 @@ def getconf(file_dir):
         json_load = json.load(json_open)
     return json_load
 
-async def run():
-    #非同期で描画処理とTL更新とhttp鯖ホストを同時にする
-    thread1 = threading.Thread(target=run_http_server)#http鯖
-    thread1.start()
-    await asyncio.gather(disp(),getTL(TOKEN))
 
 conf = getconf(conf_dir)
 TOKEN= conf[domain]["token"]
@@ -148,6 +142,11 @@ WS_URL=f'wss://{domain}/streaming?i={TOKEN}'
 if __name__ == "__main__" and (not test):
     #asyncio.run(getTL(conf["token"]))
     print("not Test mode")
-    asyncio.run(run())
+    #非同期で描画処理とTL更新とhttp鯖ホストを同時にする
+    thread1 = threading.Thread(target=run_http_server)#http鯖
+    thread2 = threading.Thread(target=disp)#描画系
+    thread1.start()
+    thread2.start()
+    asyncio.run(getTL(TOKEN))
 elif __name__ =="__main__":
     asyncio.run(getTL(TOKEN))
