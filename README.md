@@ -1,5 +1,4 @@
 # stormworks_misskey_client
-Stormworks上でmisskeyのTLを表示するための中継プログラムとすとわのディスプレイに表示するためのLUA
-あとNoteする
-# 適当な仕様
-Opecvで描画してhttpでストワに投げる
+Stormworks上でmisskeyのTLを表示するためのPythonの中継プログラムとLUAでできた表示用のプログラムたちです
+## 適当な仕様
+Opecvで描画しモノクロにして2値化してからhttpでストワに投げてます
