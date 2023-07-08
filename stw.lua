@@ -1,11 +1,11 @@
 disp_arr = {}
 ticks = 0
-wait = false
+wait = 3
 rb = "abc"
 function onTick()
-    if (not wait) then
+    if 0 < wait then
         async.httpGet(8888, "/abc")
-        wait = true
+        wait = wait -1
     end
 end
 
@@ -30,7 +30,7 @@ end
 function httpReply(port, request_body, response_body)
 	if port == 8888 then
 		rb = response_body
-    	wait = false
+    	wait = wait + 1
 	end
 end
 
@@ -38,7 +38,7 @@ end
 function split (inputstr, sep)
     local t={}
     for str in string.gmatch(inputstr, "([^"..sep.."]+)") do
-        table.insert(t, str)
+            table.insert(t, str)
     end
     return t
 end
