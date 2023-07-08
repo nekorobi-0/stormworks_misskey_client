@@ -1,6 +1,6 @@
 disp_arr = {}
 ticks = 0
-wait = 3
+wait = 5
 rb = "abc"
 function onTick()
 	now = input.getNumber(3) + "," + input.getNumber(4)
