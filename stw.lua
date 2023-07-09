@@ -1,6 +1,7 @@
 disp_arr = {}
 ticks = 0
 wait = 3
+wait = 5
 rb = "abc"
 function onTick()
     if 0 < wait then

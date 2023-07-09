@@ -15,6 +15,8 @@ domain = "misskey.io"
 test = False
 output = []
 now_img = []
+TL_name = 'localTimeline'
+compo_screen = []
 
 class S(BaseHTTPRequestHandler):
 
@@ -25,8 +27,12 @@ class S(BaseHTTPRequestHandler):
         self.end_headers()
 
     def do_GET(self):
-        print(self.requestline[5:-8])
-        print(str(self.requestline[4:-8]))
+        global compo_screen
+        print(self.requestline[5:8])
+        if self.requestline[5:8] == "stw":
+            compo_screen = self.requestline[8:-9].split(",")
+            compo_screen.pop(0)
+            print(compo_screen)
         self._set_headers()
         self.wfile.write(str(now_img).encode())
     
@@ -94,8 +100,8 @@ async def getTL(token):
             await ws.send(json.dumps({
 	            "type": 'connect',
 	            "body": {
-		            "channel": 'localTimeline',
-		            "id": '0',
+		            "channel": TL_name,
+		            "id": TL_name,
                 }
             }))
             print("connected")
