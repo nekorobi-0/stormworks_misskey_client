@@ -12,7 +12,7 @@ import romaji
 import requests
 showTL = True
 conf_dir = "conf.json"
-domain = "misskey.io"
+domain = "stormskey.works"
 test = False
 output = []
 now_img = []
@@ -146,7 +146,7 @@ def disp():
                 else:
                     show_text += romaji.romaji2hiragana(text)
             if intouch(touch_pos,(150,10),(180,20))and show_text != "":
-                Misskey.notes_create(text=show_text)
+                msk.notes_create(text=show_text)
                 importing_text = ""
             img = putText_jp(img,show_text, (85, 20), 6, (0, 0, 0))
         show_img = cv2.resize(img, (964, 480))
