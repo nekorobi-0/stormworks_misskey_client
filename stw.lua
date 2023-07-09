@@ -5,15 +5,11 @@ rb = "abc"
 function onTick()
 	now = input.getNumber(3) + "," + input.getNumber(4)
     if 0 < wait then
-<<<<<<< HEAD
 		i3 = tostring(math.floor(input.getNumber(3)))
 		i4 = tostring(math.floor(input.getNumber(4)))
 		i5 = tostring(math.floor(input.getNumber(5)))
 		o = ","..i3..","..i4..","..i5
         async.httpGet(8888, "/stw"..o)
-=======
-        async.httpGet(8888, "/"+now)
->>>>>>> 59773a086d5da5776a87d7e51c591cc0ce04df98
         wait = wait -1
     end
 end
@@ -49,7 +45,7 @@ end
 function split (inputstr, sep)
     local t={}
     for str in string.gmatch(inputstr, "([^"..sep.."]+)") do
-            table.insert(t, str)
+        table.insert(t, str)
     end
     return t
 end
