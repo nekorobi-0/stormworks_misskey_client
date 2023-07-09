@@ -4,7 +4,11 @@ wait = 3
 rb = "abc"
 function onTick()
     if 0 < wait then
-        async.httpGet(8888, "/abc")
+		i3 = tostring(math.floor(input.getNumber(3)))
+		i4 = tostring(math.floor(input.getNumber(4)))
+		i5 = tostring(math.floor(input.getNumber(5)))
+		o = ","..i3..","..i4..","..i5
+        async.httpGet(8888, "/stw"..o)
         wait = wait -1
     end
 end
@@ -15,15 +19,17 @@ function onDraw()
 	screen.drawText(20, 20, disp_arr)
     co = 0
 	a = 255
-	for i = 1, #disp_arr do
-		if a == 255 then
-			a = 0
-		else
-			a = 255
+	if #disp_arr > 2 then
+		for i = 1, #disp_arr do
+			if a == 255 then
+				a = 0
+			else
+				a = 255
+			end
+			screen.setColor(a,a,a)
+        	screen.drawRect(co % 288,math.floor(co/288),disp_arr[i],1)
+			co = co + disp_arr[i]
 		end
-		screen.setColor(a,a,a)
-        screen.drawRect(co % 288,math.floor(co/288),disp_arr[i],1)
-		co = co + disp_arr[i]
     end
     c = 0
 end
