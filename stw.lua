@@ -3,11 +3,14 @@ ticks = 0
 wait = 5
 rb = "abc"
 function onTick()
-	now = input.getNumber(3) + "," + input.getNumber(4)
     if 0 < wait then
-		i3 = tostring(math.floor(input.getNumber(3)))
-		i4 = tostring(math.floor(input.getNumber(4)))
 		i5 = tostring(math.floor(input.getNumber(5)))
+		if input.getBool(1) then
+			i3 = tostring(math.floor(input.getNumber(3)))
+			i4 = tostring(math.floor(input.getNumber(4)))
+		else
+			i3, i4 = "0", "0"
+		end
 		o = ","..i3..","..i4..","..i5
         async.httpGet(8888, "/stw"..o)
         wait = wait -1
